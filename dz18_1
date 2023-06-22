@@ -1,0 +1,74 @@
+на основі внутрішніх классів
+import java.util.ArrayList;
+import java.util.List;
+
+class Triangle {
+    private double sideA;
+    private double sideB;
+    private double sideC;
+
+    public Triangle(double sideA, double sideB, double sideC) {
+        this.sideA = sideA;
+        this.sideB = sideB;
+        this.sideC = sideC;
+    }
+
+    public void changeSides(double newSideA, double newSideB, double newSideC) {
+        if (isValidTriangle(newSideA, newSideB, newSideC)) {
+            sideA = newSideA;
+            sideB = newSideB;
+            sideC = newSideC;
+        } else {
+            System.out.println("Invalid triangle sides!");
+        }
+    }
+
+    public double getArea() {
+        double p = (sideA + sideB + sideC) / 2;
+        return Math.sqrt(p * (p - sideA) * (p - sideB) * (p - sideC));
+    }
+
+    public double getPerimeter() {
+        return sideA + sideB + sideC;
+    }
+
+    public Memento save() {
+        return new Memento(sideA, sideB, sideC);
+    }
+
+    public void restore(Memento memento) {
+        sideA = memento.getSideA();
+        sideB = memento.getSideB();
+        sideC = memento.getSideC();
+    }
+
+    private boolean isValidTriangle(double sideA, double sideB, double sideC) {
+        return sideA + sideB > sideC && sideA + sideC > sideB && sideB + sideC > sideA;
+    }
+
+    // Внутрішній клас Знімок
+    private class Memento {
+        private double sideA;
+        private double sideB;
+        private double sideC;
+
+        private Memento(double sideA, double sideB, double sideC) {
+            this.sideA = sideA;
+            this.sideB = sideB;
+            this.sideC = sideC;
+        }
+
+        private double getSideA() {
+            return sideA;
+        }
+
+        private double getSideB() {
+            return sideB;
+        }
+
+        private double getSideC() {
+            return sideC;
+        }
+    }
+}
+
