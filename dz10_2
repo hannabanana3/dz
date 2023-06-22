@@ -1,0 +1,146 @@
+// Абстрактний клас напою
+abstract class Beverage {
+    protected String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public abstract double cost();
+}
+
+// Конкретний напій: Еспресо
+class Espresso extends Beverage {
+    public Espresso() {
+        description = "Espresso";
+    }
+
+    public double cost() {
+        return 1.99;
+    }
+}
+
+// Конкретний напій: Чорна кава
+class DarkRoast extends Beverage {
+    public DarkRoast() {
+        description = "Dark Roast Coffee";
+    }
+
+    public double cost() {
+        return 0.99;
+    }
+}
+
+// Конкретний напій: Кава без кофеїну
+class Decaf extends Beverage {
+    public Decaf() {
+        description = "Decaf Coffee";
+    }
+
+    public double cost() {
+        return 1.05;
+    }
+}
+
+// Декоратор: Наповнювач
+abstract class CondimentDecorator extends Beverage {
+    public abstract String getDescription();
+}
+
+// Додатковий наповнювач: Молоко
+class Milk extends CondimentDecorator {
+    private Beverage beverage;
+
+    public Milk(Beverage beverage) {
+        this.beverage = beverage;
+    }
+
+    public String getDescription() {
+        return beverage.getDescription() + ", Milk";
+    }
+
+    public double cost() {
+        return 0.10 + beverage.cost();
+    }
+}
+
+// Додатковий наповнювач: Цукор
+class Sugar extends CondimentDecorator {
+    private Beverage beverage;
+
+    public Sugar(Beverage beverage) {
+        this.beverage = beverage;
+    }
+
+    public String getDescription() {
+        return beverage.getDescription() + ", Sugar";
+    }
+
+    public double cost() {
+        return 0.05 + beverage.cost();
+    }
+}
+
+// Додатковий наповнювач: Вершки
+class WhippedCream extends CondimentDecorator {
+    private Beverage beverage;
+
+    public WhippedCream(Beverage beverage) {
+        this.beverage = beverage;
+    }
+
+    public String getDescription() {
+        return beverage.getDescription() + ", Whipped Cream";
+    }
+
+    public double cost() {
+        return 0.20 + beverage.cost();
+    }
+}
+
+// Додатковий наповнювач: Крем
+class Cream extends CondimentDecorator {
+    private Beverage beverage;
+
+    public Cream(Beverage beverage) {
+        this.beverage = beverage;
+    }
+
+    public String getDescription() {
+        return beverage.getDescription() + ", Cream";
+    }
+
+    public double cost() {
+        return 0.15 + beverage.cost();
+    }
+}
+
+public class DecoratorExample {
+    public static void main(String[] args) {
+        // Еспресо з двома порціями цукру
+        Beverage espresso = new Espresso();
+        espresso = new Sugar(espresso);
+        espresso = new Sugar(espresso);
+        System.out.println(espresso.getDescription() + " $" + espresso.cost());
+
+        // Чорна кава з вершками та двома порціями цукру
+        Beverage darkRoast = new DarkRoast();
+        darkRoast = new WhippedCream(darkRoast);
+        darkRoast = new Sugar(darkRoast);
+        darkRoast = new Sugar(darkRoast);
+        System.out.println(darkRoast.getDescription() + " $" + darkRoast.cost());
+
+        // Чорна кава з кремом та порцією цукру
+        Beverage darkRoastWithCream = new DarkRoast();
+        darkRoastWithCream = new Cream(darkRoastWithCream);
+        darkRoastWithCream = new Sugar(darkRoastWithCream);
+        System.out.println(darkRoastWithCream.getDescription() + " $" + darkRoastWithCream.cost());
+
+        // Кава без кофеїну з молоком та двома порціями цукру
+        Beverage decaf = new Decaf();
+        decaf = new Milk(decaf);
+        decaf = new Sugar(decaf);
+        decaf = new Sugar(decaf);
+        System.out.println(decaf.getDescription() + " $" + decaf.cost());
+    }
+}
