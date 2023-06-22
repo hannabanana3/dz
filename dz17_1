@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Інтерфейс посередника
+interface ChatMediator {
+    void sendMessage(String message, User user);
+    void addUser(User user);
+}
+
+// Конкретний клас посередника, що реалізує логіку обміну повідомленнями
+class ChatRoom implements ChatMediator {
+    private List<User> users;
+
+    public ChatRoom() {
+        users = new ArrayList<>();
+    }
+
+    @Override
+    public void sendMessage(String message, User user) {
+        for (User u : users) {
+            if (u != user) {
+                u.receiveMessage(message);
+            }
+        }
+    }
+
+    @Override
+    public void addUser(User user) {
+        users.add(user);
+    }
+}
+
+// Базовий клас для всіх користувачів чату
+abstract class User {
+    protected ChatMediator mediator;
+    protected String username;
+
+    public User(ChatMediator mediator, String username) {
+        this.mediator = mediator;
+        this.username = username;
+    }
+
+    public abstract void sendMessage(String message);
+    public abstract void receiveMessage(String message);
+}
+
+// Конкретний клас користувача чату
+class ChatUser extends User {
+    public ChatUser(ChatMediator mediator, String username) {
+        super(mediator, username);
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        System.out.println(username + " sends message: " + message);
+        mediator.sendMessage(message, this);
+    }
+
+    @Override
+    public void receiveMessage(String message) {
+        System.out.println(username + " receives message: " + message);
+    }
+}
+
+
