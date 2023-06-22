@@ -1,0 +1,84 @@
+// Інтерфейс стану плеєра
+interface PlayerState {
+    void play();
+    void pause();
+    void stop();
+}
+
+// Конкретні стани плеєра
+class PlayingState implements PlayerState {
+    @Override
+    public void play() {
+        System.out.println("The player is already playing.");
+    }
+
+    @Override
+    public void pause() {
+        System.out.println("Pausing the player.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Stopping the player.");
+    }
+}
+
+class PausedState implements PlayerState {
+    @Override
+    public void play() {
+        System.out.println("Resuming the player.");
+    }
+
+    @Override
+    public void pause() {
+        System.out.println("The player is already paused.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Stopping the player.");
+    }
+}
+
+class StoppedState implements PlayerState {
+    @Override
+    public void play() {
+        System.out.println("Starting the player.");
+    }
+
+    @Override
+    public void pause() {
+        System.out.println("The player is stopped. Cannot pause.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("The player is already stopped.");
+    }
+}
+
+// Клас музичного плеєра
+class MusicPlayer {
+    private PlayerState currentState;
+
+    public MusicPlayer() {
+        currentState = new StoppedState(); // Початковий стан - зупинено
+    }
+
+    public void setState(PlayerState state) {
+        currentState = state;
+    }
+
+    public void play() {
+        currentState.play();
+    }
+
+    public void pause() {
+        currentState.pause();
+    }
+
+    public void stop() {
+        currentState.stop();
+    }
+}
+
