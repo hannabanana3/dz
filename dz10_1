@@ -1,0 +1,138 @@
+interface Printable {
+    void print();
+}
+
+class PrintableString implements Printable {
+    private String value;
+
+    public PrintableString() {
+        this.value = "";
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public void print() {
+        System.out.println(value);
+    }
+}
+
+abstract class StringDecorator implements Printable {
+    protected Printable printable;
+
+    public StringDecorator(Printable printable) {
+        this.printable = printable;
+    }
+
+    @Override
+    public void print() {
+        printable.print();
+    }
+}
+
+class PostComaDecorator extends StringDecorator {
+    public PostComaDecorator(Printable printable) {
+        super(printable);
+    }
+
+    @Override
+    public void print() {
+        super.print();
+        System.out.print(", ");
+    }
+}
+
+class PostEndlDecorator extends StringDecorator {
+    public PostEndlDecorator(Printable printable) {
+        super(printable);
+    }
+
+    @Override
+    public void print() {
+        super.print();
+        System.out.println();
+    }
+}
+
+class PostSpaceDecorator extends StringDecorator {
+    public PostSpaceDecorator(Printable printable) {
+        super(printable);
+    }
+
+    @Override
+    public void print() {
+        super.print();
+        System.out.print(" ");
+    }
+}
+
+class PostExclaimDecorator extends StringDecorator {
+    public PostExclaimDecorator(Printable printable) {
+        super(printable);
+    }
+
+    @Override
+    public void print() {
+        super.print();
+        System.out.print("!");
+    }
+}
+
+class PostWordDecorator extends StringDecorator {
+    private String word;
+
+    public PostWordDecorator(Printable printable, String word) {
+        super(printable);
+        this.word = word;
+    }
+
+    @Override
+    public void print() {
+        super.print();
+        System.out.print(word + " ");
+    }
+}
+
+class PreWordDecorator extends StringDecorator {
+    private String word;
+
+    public PreWordDecorator(Printable printable, String word) {
+        super(printable);
+        this.word = word;
+    }
+
+    @Override
+    public void print() {
+        System.out.print(word + " ");
+        super.print();
+    }
+}
+
+public class DecoratorExample {
+    public static void main(String[] args) {
+        PrintableString printableString = new PrintableString();
+        printableString.setValue("Hello");
+
+        Printable decoratedString = new PostComaDecorator(
+                new PostWordDecorator(
+                        new PostSpaceDecorator(
+                                new PreWordDecorator(
+                                        new PostExclaimDecorator(
+                                                new PostEndlDecorator(printableString)
+                                        ),
+                                        "World"
+                                )
+                        ),
+                        "from"
+                )
+        );
+
+        decoratedString.print();
+    }
+}
