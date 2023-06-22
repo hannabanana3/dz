@@ -1,0 +1,40 @@
+// Інтерфейс стратегії арифметичної операції
+interface ArithmeticStrategy {
+    int execute(int a, int b);
+}
+
+// Конкретні стратегії арифметичних операцій
+class AdditionStrategy implements ArithmeticStrategy {
+    @Override
+    public int execute(int a, int b) {
+        return a + b;
+    }
+}
+
+class SubtractionStrategy implements ArithmeticStrategy {
+    @Override
+    public int execute(int a, int b) {
+        return a - b;
+    }
+}
+
+class MultiplicationStrategy implements ArithmeticStrategy {
+    @Override
+    public int execute(int a, int b) {
+        return a * b;
+    }
+}
+
+// Клас, який використовує стратегію арифметичної операції
+class Calculator {
+    private ArithmeticStrategy arithmeticStrategy;
+
+    public void setArithmeticStrategy(ArithmeticStrategy arithmeticStrategy) {
+        this.arithmeticStrategy = arithmeticStrategy;
+    }
+
+    public int calculate(int a, int b) {
+        return arithmeticStrategy.execute(a, b);
+    }
+}
+
