@@ -1,0 +1,53 @@
+public interface Napiy {
+    double getCost();
+    String getDescription();
+}
+
+public class Espresso implements Napiy {
+    private double cost = 1.5;
+    private String description = "Еспресо";
+
+    @Override
+    public double getCost() {
+        return cost;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+}
+
+public abstract class NapiyFactory {
+    public abstract Napiy createNapiy();
+}
+
+public class EspressoFactory extends NapiyFactory {
+    @Override
+    public Napiy createNapiy() {
+        return new Espresso();
+    }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Kaviarnia {
+    private List<Napiy> orders;
+
+    public Kaviarnia() {
+        orders = new ArrayList<>();
+    }
+
+    public void takeOrder(Napiy Napiy) {
+        orders.add(Napiy);
+    }
+
+    public double getTotalProfit() {
+        double totalProfit = 0;
+        for (Napiy Napiy : orders) {
+            totalProfit += (Napiy.getCost() - Napiy.getCost());
+        }
+        return totalProfit;
+    }
+}
