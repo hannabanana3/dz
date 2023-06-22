@@ -1,0 +1,94 @@
+// Абстрактний клас Військовий об’єкт
+abstract class MilitaryObject {
+    public abstract void accept(SpyVisitor visitor);
+}
+
+// Клас Генеральний штаб, що є нащадком Військового об’єкту
+class GeneralHeadquarters extends MilitaryObject {
+    private List<String> secretDocuments = new ArrayList<>();
+
+    public void addSecretDocument(String document) {
+        secretDocuments.add(document);
+    }
+
+    public List<String> getSecretDocuments() {
+        return secretDocuments;
+    }
+
+    @Override
+    public void accept(SpyVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+// Клас Військова база, що є нащадком Військового об’єкту
+class MilitaryBase extends MilitaryObject {
+    private int personnelCount;
+    private int equipmentCount;
+
+    public MilitaryBase(int personnelCount, int equipmentCount) {
+        this.personnelCount = personnelCount;
+        this.equipmentCount = equipmentCount;
+    }
+
+    public int getPersonnelCount() {
+        return personnelCount;
+    }
+
+    public int getEquipmentCount() {
+        return equipmentCount;
+    }
+
+    @Override
+    public void accept(SpyVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+// Абстрактний клас Шпигун
+abstract class SpyVisitor {
+    public abstract void visit(GeneralHeadquarters headquarters);
+    public abstract void visit(MilitaryBase militaryBase);
+}
+
+// Клас Секретний агент, який є нащадком Шпигуна
+class SecretAgent extends SpyVisitor {
+    private List<String> collectedInformation = new ArrayList<>();
+
+    public List<String> getCollectedInformation() {
+        return collectedInformation;
+    }
+
+    @Override
+    public void visit(GeneralHeadquarters headquarters) {
+        List<String> secretDocuments = headquarters.getSecretDocuments();
+        collectedInformation.addAll(secretDocuments);
+        System.out.println("Secret agent collected secret documents: " + secretDocuments);
+    }
+
+    @Override
+    public void visit(MilitaryBase militaryBase) {
+        // Секретний агент не має дій у військовій базі
+        System.out.println("Secret agent does not perform any actions in the military base.");
+    }
+}
+
+// Клас Диверсант, який є нащадком Шпигуна
+class Saboteur extends SpyVisitor {
+    @Override
+    public void visit(GeneralHeadquarters headquarters) {
+        List<String> secretDocuments = headquarters.getSecretDocuments();
+        secretDocuments.clear();
+        System.out.println("Saboteur destroyed secret documents in the general headquarters.");
+    }
+
+    @Override
+    public void visit(MilitaryBase militaryBase) {
+        int personnelCount = militaryBase.getPersonnelCount();
+        int equipmentCount = militaryBase.getEquipmentCount();
+        personnelCount = 0;
+        equipmentCount = 0;
+        System.out.println("Saboteur destroyed personnel and equipment in the military base.");
+    }
+}
+
