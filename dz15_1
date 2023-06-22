@@ -1,0 +1,74 @@
+// Клас світильника
+class Light {
+    private String location;
+
+    public Light(String location) {
+        this.location = location;
+    }
+
+    public void turnOn() {
+        System.out.println("Light is already on in " + location);
+    }
+
+    public void turnOff() {
+        System.out.println("Turning off light in " + location);
+    }
+}
+
+// Абстрактний командний об'єкт
+interface Command {
+    void execute();
+}
+
+// Команда для вимкнення світильника
+class TurnOffCommand implements Command {
+    private Light light;
+
+    public TurnOffCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOff();
+    }
+}
+
+// Пульт керування
+class RemoteControl {
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+    }
+}
+
+// Демонстрація роботи пульта керування
+public class Main {
+    public static void main(String[] args) {
+        // Створення світильників
+        Light livingRoomLight = new Light("Living Room");
+        Light kitchenLight = new Light("Kitchen");
+        Light bedroomLight = new Light("Bedroom");
+
+        // Створення команд для вимкнення світильників
+        Command turnOffLivingRoomLightCommand = new TurnOffCommand(livingRoomLight);
+        Command turnOffKitchenLightCommand = new TurnOffCommand(kitchenLight);
+        Command turnOffBedroomLightCommand = new TurnOffCommand(bedroomLight);
+
+        // Створення пульта керування
+        RemoteControl remoteControl = new RemoteControl();
+
+        // Налаштування команд на пульті керування
+        remoteControl.setCommand(turnOffLivingRoomLightCommand);
+        remoteControl.pressButton(); // Вимкнення світильника у вітальній
+        remoteControl.setCommand(turnOffKitchenLightCommand);
+        remoteControl.pressButton(); // Вимкнення світильника у кухні
+        remoteControl.setCommand(turnOffBedroomLightCommand);
+        remoteControl.pressButton(); // Вимкнення світильника у спальні
+    }
+}
