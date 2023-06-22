@@ -1,0 +1,63 @@
+// Абстрактний клас команди
+interface Command {
+    void execute();
+}
+
+// Конкретна команда для створення документа
+class CreateDocumentCommand implements Command {
+    private TextEditor textEditor;
+
+    public CreateDocumentCommand(TextEditor textEditor) {
+        this.textEditor = textEditor;
+    }
+
+    @Override
+    public void execute() {
+        textEditor.createDocument();
+    }
+}
+
+// Конкретна команда для збереження документа
+class SaveDocumentCommand implements Command {
+    private TextEditor textEditor;
+
+    public SaveDocumentCommand(TextEditor textEditor) {
+        this.textEditor = textEditor;
+    }
+
+    @Override
+    public void execute() {
+        textEditor.saveDocument();
+    }
+}
+
+// Конкретна команда для друку документа
+class PrintDocumentCommand implements Command {
+    private TextEditor textEditor;
+
+    public PrintDocumentCommand(TextEditor textEditor) {
+        this.textEditor = textEditor;
+    }
+
+    @Override
+    public void execute() {
+        textEditor.printDocument();
+    }
+}
+
+// Текстовий редактор
+class TextEditor {
+    public void createDocument() {
+        System.out.println("Creating a new document...");
+    }
+
+    public void saveDocument() {
+        System.out.println("Saving the document...");
+    }
+
+    public void printDocument() {
+        System.out.println("Printing the document...");
+    }
+}
+
+
