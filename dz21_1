@@ -1,0 +1,47 @@
+// Інтерфейс стратегії оплати
+interface PaymentStrategy {
+    void pay(double amount);
+}
+
+// Конкретні стратегії оплати
+class BankTransferStrategy implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Performing bank transfer payment of $" + amount);
+        // Логіка оплати через банківський переказ
+    }
+}
+
+class PayPalStrategy implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Performing PayPal payment of $" + amount);
+        // Логіка оплати через PayPal
+    }
+}
+
+class GooglePayStrategy implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Performing Google Pay payment of $" + amount);
+        // Логіка оплати через Google Pay
+    }
+}
+
+// Клас, який використовує стратегію оплати
+class PaymentProcessor {
+    private PaymentStrategy paymentStrategy;
+
+    public PaymentProcessor(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void processPayment(double amount) {
+        paymentStrategy.pay(amount);
+    }
+}
+
