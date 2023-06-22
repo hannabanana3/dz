@@ -1,0 +1,48 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TextFileReader {
+    private static TextFileReader instance;
+
+    private TextFileReader() {
+        // Приватний конструктор, щоб заборонити зовнішнє створення екземплярів
+    }
+
+    public static synchronized TextFileReader getInstance() {
+        if (instance == null) {
+            instance = new TextFileReader();
+        }
+        return instance;
+    }
+
+    public String readTextFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return content.toString();
+    }
+}
+
+public class SingletonExample {
+    public static void main(String[] args) {
+        TextFileReader reader1 = TextFileReader.getInstance();
+        TextFileReader reader2 = TextFileReader.getInstance();
+
+        if (reader1 == reader2) {
+            System.out.println("Both readers are the same instance.");
+        }
+
+        String filePath = "example.txt";
+        String fileContent = reader1.readTextFile(filePath);
+        System.out.println("File content:\n" + fileContent);
+    }
+}
