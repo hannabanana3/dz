@@ -1,0 +1,107 @@
+// Клас співробітника
+interface Employee {
+    void accept(Visitor visitor);
+}
+
+class Salesperson implements Employee {
+    private String name;
+    private double salary;
+
+    public Salesperson(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Manager implements Employee {
+    private String name;
+    private double salary;
+
+    public Manager(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+// Інтерфейс відвідувача
+interface Visitor {
+    void visit(Salesperson salesperson);
+    void visit(Manager manager);
+}
+
+// Конкретний відвідувач для підвищення заробітної плати
+class SalaryIncreaseVisitor implements Visitor {
+    private double percentage;
+
+    public SalaryIncreaseVisitor(double percentage) {
+        this.percentage = percentage;
+    }
+
+    @Override
+    public void visit(Salesperson salesperson) {
+        double newSalary = salesperson.getSalary() * (1 + percentage);
+        salesperson.setSalary(newSalary);
+        System.out.println(salesperson.getName() + "'s salary increased to: " + newSalary);
+    }
+
+    @Override
+    public void visit(Manager manager) {
+        double newSalary = manager.getSalary() * (1 + percentage);
+        manager.setSalary(newSalary);
+        System.out.println(manager.getName() + "'s salary increased to: " + newSalary);
+    }
+}
+
+// Конкретний відвідувач для накладання штрафів
+class PenaltyVisitor implements Visitor {
+    private double penaltyAmount;
+
+    public PenaltyVisitor(double penaltyAmount) {
+        this.penaltyAmount = penaltyAmount;
+    }
+
+    @Override
+    public void visit(Salesperson salesperson) {
+        double newSalary = salesperson.getSalary() - penaltyAmount;
+        salesperson.setSalary(newSalary);
+        System.out.println(salesperson.getName() + "'s salary penalized to: " + newSalary);
+    }
+
+    @Override
+    public void visit(Manager manager) {
+        double newSalary = manager.getSalary() - penaltyAmount;
+        manager.setSalary(newSalary);
+        System.out.println(manager.getName() + "'s salary penalized to: " + newSalary);
+    }
+}
+
+// Клас, що об'єднує співробітників та виконує дії над ними
+class Organization {
+    private List<Employee> employees = new ArrayList<>();
+
