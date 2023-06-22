@@ -1,0 +1,76 @@
+// Абстрактний клас команди
+interface Command {
+    void execute();
+}
+
+// Конкретна команда для вимикання телевізора
+class TVOffCommand implements Command {
+    private Television television;
+
+    public TVOffCommand(Television television) {
+        this.television = television;
+    }
+
+    @Override
+    public void execute() {
+        television.turnOff();
+    }
+}
+
+// Конкретна команда для вимикання радіоприймача
+class RadioOffCommand implements Command {
+    private Radio radio;
+
+    public RadioOffCommand(Radio radio) {
+        this.radio = radio;
+    }
+
+    @Override
+    public void execute() {
+        radio.turnOff();
+    }
+}
+
+// Композитна команда для вимикання всіх пристроїв
+class AllDevicesOffCommand implements Command {
+    private List<Command> commands;
+
+    public AllDevicesOffCommand(List<Command> commands) {
+        this.commands = commands;
+    }
+
+    @Override
+    public void execute() {
+        for (Command command : commands) {
+            command.execute();
+        }
+    }
+}
+
+// Клас телевізора
+class Television {
+    public void turnOff() {
+        System.out.println("TV is turned off");
+    }
+}
+
+// Клас радіоприймача
+class Radio {
+    public void turnOff() {
+        System.out.println("Radio is turned off");
+    }
+}
+
+// Клас пульта дистанційного керування
+class RemoteControl {
+    private Command allDevicesOffCommand;
+
+    public RemoteControl(Command allDevicesOffCommand) {
+        this.allDevicesOffCommand = allDevicesOffCommand;
+    }
+
+    public void turnAllDevicesOff() {
+        allDevicesOffCommand.execute();
+    }
+}
+
