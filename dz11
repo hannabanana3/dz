@@ -1,0 +1,59 @@
+// Клас, що представляє відеофайл
+class VideoFile {
+    private String name;
+    private String format;
+
+    public VideoFile(String name, String format) {
+        this.name = name;
+        this.format = format;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+}
+
+// Клас, що представляє кодек
+class Codec {
+    private String type;
+
+    public Codec(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+
+// Фасад, що спрощує роботу з відеоконвертацією
+class VideoConverterFacade {
+    public VideoFile convert(VideoFile file, Codec codec) {
+        String sourceFormat = file.getFormat();
+        String targetFormat = codec.getType();
+
+        VideoFile newVideoFile = new VideoFile(file.getName(), targetFormat);
+
+        // Логіка конвертації відеофайлу
+        System.out.println("Converting video from " + sourceFormat + " to " + targetFormat);
+        // Додаткові операції, які можуть бути потрібні при конвертації
+
+        return newVideoFile;
+    }
+}
+
+public class FacadeExample {
+    public static void main(String[] args) {
+        VideoFile videoFile = new VideoFile("video.mp4", "mp4");
+        Codec targetCodec = new Codec("avi");
+
+        VideoConverterFacade converter = new VideoConverterFacade();
+        VideoFile convertedFile = converter.convert(videoFile, targetCodec);
+
+        System.out.println("Converted file: " + convertedFile.getName() + "." + convertedFile.getFormat());
+    }
+}
