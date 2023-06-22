@@ -1,0 +1,93 @@
+// Базовий обробник операцій
+abstract class OperationHandler {
+    private OperationHandler nextHandler;
+
+    public void setNextHandler(OperationHandler handler) {
+        nextHandler = handler;
+    }
+
+    public void processRequest(double number1, double number2, String operation) {
+        if (canHandleOperation(operation)) {
+            double result = executeOperation(number1, number2, operation);
+            System.out.println(number1 + " " + operation + " " + number2 + " = " + result);
+        } else if (nextHandler != null) {
+            nextHandler.processRequest(number1, number2, operation);
+        } else {
+            System.out.println("Unsupported operation: " + operation);
+        }
+    }
+
+    protected abstract boolean canHandleOperation(String operation);
+
+    protected abstract double executeOperation(double number1, double number2, String operation);
+}
+
+// Обробник додавання
+class AdditionHandler extends OperationHandler {
+    @Override
+    protected boolean canHandleOperation(String operation) {
+        return operation.equals("+");
+    }
+
+    @Override
+    protected double executeOperation(double number1, double number2, String operation) {
+        return number1 + number2;
+    }
+}
+
+// Обробник віднімання
+class SubtractionHandler extends OperationHandler {
+    @Override
+    protected boolean canHandleOperation(String operation) {
+        return operation.equals("-");
+    }
+
+    @Override
+    protected double executeOperation(double number1, double number2, String operation) {
+        return number1 - number2;
+    }
+}
+
+// Обробник множення
+class MultiplicationHandler extends OperationHandler {
+    @Override
+    protected boolean canHandleOperation(String operation) {
+        return operation.equals("*");
+    }
+
+    @Override
+    protected double executeOperation(double number1, double number2, String operation) {
+        return number1 * number2;
+    }
+}
+
+// Обробник ділення
+class DivisionHandler extends OperationHandler {
+    @Override
+    protected boolean canHandleOperation(String operation) {
+        return operation.equals("/");
+    }
+
+    @Override
+    protected double executeOperation(double number1, double number2, String operation) {
+        if (number2 != 0) {
+            return number1 / number2;
+        } else {
+            System.out.println("Error: Division by zero");
+            return Double.NaN;
+        }
+    }
+}
+
+public class CalculatorSimulator {
+    public static void main(String[] args) {
+        OperationHandler additionHandler = new AdditionHandler();
+        OperationHandler subtractionHandler = new SubtractionHandler();
+        OperationHandler multiplicationHandler = new MultiplicationHandler();
+        OperationHandler divisionHandler = new DivisionHandler();
+
+        additionHandler.setNextHandler(subtractionHandler);
+        subtractionHandler.setNextHandler(multiplicationHandler);
+        multiplicationHandler.setNextHandler(divisionHandler);
+
+    
