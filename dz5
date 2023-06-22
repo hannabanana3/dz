@@ -1,0 +1,136 @@
+import java.util.HashMap;
+import java.util.Map;
+
+// Абстрактний клас компонента
+abstract class Component implements Cloneable {
+    protected String name;
+
+    public abstract void setName(String name);
+    public abstract String getName();
+
+    @Override
+    public Component clone() {
+        try {
+            return (Component) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+}
+
+// Клас двигуна
+class Engine extends Component {
+    private int power;
+    private double displacement;
+    private double torque;
+    private String fuelType;
+
+    public Engine(String name, int power, double displacement, double torque, String fuelType) {
+        this.name = name;
+        this.power = power;
+        this.displacement = displacement;
+        this.torque = torque;
+        this.fuelType = fuelType;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    // ... Додаткові геттери та сеттери для характеристик двигуна
+
+    @Override
+    public Engine clone() {
+        return (Engine) super.clone();
+    }
+}
+
+// Клас колісних дисків
+class Wheel extends Component {
+    private String material;
+    private int diameter;
+
+    public Wheel(String name, String material, int diameter) {
+        this.name = name;
+        this.material = material;
+        this.diameter = diameter;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    // ... Додаткові геттери та сеттери для характеристик колісних дисків
+
+    @Override
+    public Wheel clone() {
+        return (Wheel) super.clone();
+    }
+}
+
+// Клас Автомобіль
+class Car implements Cloneable {
+    private String type;
+    private Engine engine;
+    private Wheel wheel;
+    // ... Додаткові компоненти автомобіля
+
+    public Car(String type, Engine engine, Wheel wheel) {
+        this.type = type;
+        this.engine = engine;
+        this.wheel = wheel;
+        // ... Ініціалізація додаткових компонентів
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setWheel(Wheel wheel) {
+        this.wheel = wheel;
+    }
+
+    public Wheel getWheel() {
+        return wheel;
+    }
+
+    // ... Додаткові геттери та сеттери для інших компонентів автомобіля
+
+    @Override
+    public Car clone() {
+        try {
+            Car clonedCar = (Car) super.clone();
+            clonedCar.setEngine(engine.clone());
+            clonedCar.setWheel(wheel.clone());
+            // ... Клонування додаткових компонентів автомобіля
+            return clonedCar;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+}
+
