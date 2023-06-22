@@ -1,0 +1,45 @@
+public class TransportPurchase {
+    public static void main(String[] args) {
+        int A = 10; // Кількість автобусів
+        int T = 5; // Кількість трамваїв
+        int Tr = 3; // Кількість тролейбусів
+        int N = 100; // Пробіг у тисячах кілометрів
+
+        int[][] cost = {
+            {6000000, 10000000, 7000000}, // Вартість закупки (автобус, трамвай, тролейбус) для Volvo
+            {4500000, 9000000, 6800000}, // Вартість закупки (автобус, трамвай, тролейбус) для Skoda
+            {5500000, 9500000, 7000000} // Вартість закупки (автобус, трамвай, тролейбус) для Hyundai
+        };
+
+        int[][] operatingCost = {
+            {20, 7, 13}, // Вартість експлуатації (автобус, трамвай, тролейбус) для Volvo
+            {25, 8, 12}, // Вартість експлуатації (автобус, трамвай, тролейбус) для Skoda
+            {20, 6, 11} // Вартість експлуатації (автобус, трамвай, тролейбус) для Hyundai
+        };
+
+        int minCost = Integer.MAX_VALUE;
+        String manufacturer = "";
+
+        for (int i = 0; i < cost.length; i++) {
+            int totalCost = calculateTotalCost(cost[i], operatingCost[i], A, T, Tr, N);
+            if (totalCost < minCost) {
+                minCost = totalCost;
+                if (i == 0)
+                    manufacturer = "Volvo";
+                else if (i == 1)
+                    manufacturer = "Skoda";
+                else
+                    manufacturer = "Hyundai";
+            }
+        }
+
+        System.out.println("Найкращий виробник транспорту: " + manufacturer);
+        System.out.println("Мінімальна загальна вартість: " + minCost);
+    }
+
+    public static int calculateTotalCost(int[] purchaseCost, int[] operatingCost, int A, int T, int Tr, int N) {
+        int purchaseTotal = purchaseCost[0] * A + purchaseCost[1] * T + purchaseCost[2] * Tr;
+        int operatingTotal = operatingCost[0] * N * A + operatingCost[1] * N * T + operatingCost[2] * N * Tr;
+        return purchaseTotal + operatingTotal;
+    }
+}
