@@ -1,0 +1,63 @@
+// Інтерфейс посередника
+interface AirTrafficControlMediator {
+    void registerFlight(Flight flight);
+    void sendMessage(String message, Flight sender);
+}
+
+// Клас посередника, що реалізує логіку обміну повідомленнями
+class AirTrafficControlTower implements AirTrafficControlMediator {
+    private List<Flight> flights;
+
+    public AirTrafficControlTower() {
+        flights = new ArrayList<>();
+    }
+
+    @Override
+    public void registerFlight(Flight flight) {
+        flights.add(flight);
+    }
+
+    @Override
+    public void sendMessage(String message, Flight sender) {
+        for (Flight flight : flights) {
+            if (flight != sender) {
+                flight.receiveMessage(message);
+            }
+        }
+    }
+}
+
+// Базовий клас для всіх літаків
+abstract class Flight {
+    protected AirTrafficControlMediator mediator;
+
+    public Flight(AirTrafficControlMediator mediator) {
+        this.mediator = mediator;
+    }
+
+    public abstract void sendMessage(String message);
+    public abstract void receiveMessage(String message);
+}
+
+// Конкретний клас літака
+class Airplane extends Flight {
+    private String flightNumber;
+
+    public Airplane(String flightNumber, AirTrafficControlMediator mediator) {
+        super(mediator);
+        this.flightNumber = flightNumber;
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        System.out.println("Airplane " + flightNumber + " sends message: " + message);
+        mediator.sendMessage(message, this);
+    }
+
+    @Override
+    public void receiveMessage(String message) {
+        System.out.println("Airplane " + flightNumber + " receives message: " + message);
+    }
+}
+
+
