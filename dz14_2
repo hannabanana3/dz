@@ -1,0 +1,65 @@
+// Базовий обробник файлів
+abstract class FileHandler {
+    private FileHandler nextHandler;
+
+    public void setNextHandler(FileHandler handler) {
+        nextHandler = handler;
+    }
+
+    public void openFile(String fileName) {
+        if (canHandleFile(fileName)) {
+            open(fileName);
+        } else if (nextHandler != null) {
+            nextHandler.openFile(fileName);
+        } else {
+            System.out.println("Unsupported file type: " + getFileExtension(fileName));
+        }
+    }
+
+    protected abstract boolean canHandleFile(String fileName);
+
+    protected abstract void open(String fileName);
+
+    protected String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex != -1 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1);
+        }
+        return "";
+    }
+}
+
+// Обробник для текстових файлів
+class TextFileHandler extends FileHandler {
+    @Override
+    protected boolean canHandleFile(String fileName) {
+        String extension = getFileExtension(fileName);
+        return extension.equalsIgnoreCase("txt");
+    }
+
+    @Override
+    protected void open(String fileName) {
+        System.out.println("Opening text file: " + fileName);
+    }
+}
+
+// Обробник для зображень
+class ImageFileHandler extends FileHandler {
+    @Override
+    protected boolean canHandleFile(String fileName) {
+        String extension = getFileExtension(fileName);
+        return extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png");
+    }
+
+    @Override
+    protected void open(String fileName) {
+        System.out.println("Opening image file: " + fileName);
+    }
+}
+
+// Обробник для відеофайлів
+class VideoFileHandler extends FileHandler {
+    @Override
+    protected boolean canHandleFile(String fileName) {
+        String extension = getFileExtension(fileName);
+        return extension.equalsIgnoreCase("mp4") 
