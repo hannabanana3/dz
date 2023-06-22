@@ -1,0 +1,80 @@
+Ось приклад реалізації механізму аутентифікації для надання прав користувачам на базі логіну та паролю:
+
+```java
+// Базовий клас користувача
+class User {
+    private String username;
+    private String password;
+    private UserType userType;
+
+    public User(String username, String password, UserType userType) {
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public boolean authenticate(String password) {
+        return this.password.equals(password);
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+}
+
+// Перелік типів користувачів
+enum UserType {
+    ADMIN,
+    MODERATOR,
+    GUEST
+}
+
+// Клас, що реалізує механізм аутентифікації
+class AuthenticationManager {
+    private List<User> users;
+
+    public AuthenticationManager() {
+        users = new ArrayList<>();
+    }
+
+    public void registerUser(String username, String password, UserType userType) {
+        User newUser = new User(username, password, userType);
+        users.add(newUser);
+    }
+
+    public User authenticateUser(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.authenticate(password)) {
+                return user;
+            }
+        }
+        return null; // Аутентифікація неуспішна
+    }
+}
+
+public class AuthenticationExample {
+    public static void main(String[] args) {
+        AuthenticationManager authManager = new AuthenticationManager();
+        
+        // Реєстрація користувачів
+        authManager.registerUser("admin", "admin123", UserType.ADMIN);
+        authManager.registerUser("moderator", "moderator123", UserType.MODERATOR);
+        authManager.registerUser("guest", "guest123", UserType.GUEST);
+
+        //аутентифікація
+        User authenticatedUser = authManager.authenticateUser("admin", "admin123");
+        if (authenticatedUser != null) {
+            System.out.println("Authentication successful!");
+            System.out.println("Welcome, " + authenticatedUser.getUsername() + "!");
+            System.out.println("User type: " + authenticatedUser.getUserType());
+        } else {
+            System.out.println("Authentication failed!");
+        }
+    }
+}
+```
+
