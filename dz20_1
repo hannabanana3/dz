@@ -1,0 +1,69 @@
+// Інтерфейс стану
+interface State {
+    void handle();
+}
+
+// Конкретні стани
+class StateA implements State {
+    private Context context;
+
+    public StateA(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void handle() {
+        // Логіка обробки стану A
+        // Впливає на контекст
+        context.setState(new StateB(context)); // Зміна стану
+    }
+}
+
+class StateB implements State {
+    private Context context;
+
+    public StateB(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void handle() {
+        // Логіка обробки стану B
+        // Впливає на контекст
+        context.setState(new StateC(context)); // Зміна стану
+    }
+}
+
+class StateC implements State {
+    private Context context;
+
+    public StateC(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void handle() {
+        // Логіка обробки стану C
+        // Впливає на контекст
+        context.setState(new StateA(context)); // Зміна стану
+    }
+}
+
+// Контекст
+class Context {
+    private State currentState;
+
+    public Context() {
+        currentState = new StateA(this); // Початковий стан
+    }
+
+    public void setState(State state) {
+        currentState = state;
+    }
+
+    public void performAction() {
+        currentState.handle();
+    }
+}
+
+
