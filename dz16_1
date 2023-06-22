@@ -1,0 +1,60 @@
+// Клас працівника
+class Employee {
+    private String name;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+// Інтерфейс ітератора
+interface Iterator {
+    boolean hasNext();
+    Employee next();
+}
+
+// Клас колекції працівників
+class EmployeeCollection {
+    private List<Employee> employees;
+
+    public EmployeeCollection() {
+        employees = new ArrayList<>();
+    }
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+
+    public Iterator getIterator() {
+        return new AlphabeticalIterator();
+    }
+
+    // Внутрішній клас для ітератора, що перебирає елементи в алфавітному порядку
+    private class AlphabeticalIterator implements Iterator {
+        private int currentIndex;
+
+        public AlphabeticalIterator() {
+            currentIndex = 0;
+            // Сортування працівників за іменем в алфавітному порядку
+            employees.sort(Comparator.comparing(Employee::getName));
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < employees.size();
+        }
+
+        @Override
+        public Employee next() {
+            if (hasNext()) {
+                return employees.get(currentIndex++);
+            }
+            return null;
+        }
+    }
+}
+
